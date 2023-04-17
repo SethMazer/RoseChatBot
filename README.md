@@ -27,7 +27,7 @@ For example, if the user says "Im good", the chatbot will respond with "Why are 
 
 Then the program prompts the user for a response to other questions, based on the emotion detected.
 It then uses another loop to ensure that the user provides a non-empty response, so the code doesnt jump ahead and the user has time to answer.
-It then string manipulation functions to remove any of the predefined keywords from the user's response in order to make the chatbot's response more grammatically sound.
+It then uses string manipulation functions to remove any of the predefined keywords from the user's response in order to make the chatbot's response more grammatically sound.
 Then it generates a response based on the user's input and emotion, and then displays its response to the user
 It repeats the process of prompting for a response, analyzing it, and generating a response until the user provides an empty response.
 Then after all questions have been answered the program ends.
