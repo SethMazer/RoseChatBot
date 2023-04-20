@@ -17,6 +17,22 @@
 #define BUFFER_SIZE 256
 
 
+//Added 4/20/2023 -> Removes need for 4 different for loops
+//Running through each response array to see if users response is equal to any of the emotions in said arrays
+void findEmotion(const char* userResponse, const char* array[], int size, bool* emotionalState, char* emotion){
+
+    for(int i = 0; i < size; i++){
+        if(strstr(userResponse, array[i]) != NULL){
+            //Then if so, set the emotional state that corresponds with call, and set emotion to emotion matched in the response arrays
+            *emotionalState = true;
+            strcpy(emotion, array[i]);
+            break;
+        }
+    }
+
+};
+
+
 int main(int argc, const char * argv[]) {
     
     //Greeting and space
@@ -31,8 +47,8 @@ int main(int argc, const char * argv[]) {
     
     //Initilazing keywords, bools, and emotion
     
-    const char* pronouns[20] = {"I like", "I did", "I went to", "I went", "I went on a", "I went to the", "I ate", "I ate at",
-    "i went to", "i went", "i like", "i did", "i went on a", "i went to the", "i ate", "i ate at", "i had", "I had", "I passed", "i passed"};
+    const char* pronouns[22] = {"I like", "I did", "I went to", "I went", "I went on a", "I went to the", "I ate", "I ate at",
+    "i went to", "i went", "i like", "i did", "i went on a", "i went to the", "i ate", "i ate at", "i had", "I had", "I passed", "i passed", "I didnt", "I did not"};
     
     const char* positiveResponses[10] = {"Happy", "happy", "Good", "good", "Alright", "alright", "aight", "Aight", "Fine", "fine"};
     
@@ -54,46 +70,16 @@ int main(int argc, const char * argv[]) {
     
     int numSubstrs = sizeof(pronouns) / sizeof(pronouns[0]);
     
-    const char* emotion;
+    char emotion[50];
     
-    //Running loop through positive to check to see if the firstResponse is equal to any of the positive responses
-    for(int i = 0; i < sizeof(positiveResponses) / sizeof(positiveResponses[0]); i++){
-        if(strstr(firstResponse, positiveResponses[i]) != NULL){
-            //Sets positive to true and emotion to whatever the index was
-            positive = true;
-            emotion = positiveResponses[i];
-            break;
-            
-            //Checking if their is a pronoun like "Im" in response
-        }
-    }
     
-    //Running loop through extraPositiveResponse to check to see if the firstResponse is equal to any of the extraPositive responses
-    for(int i = 0; i < sizeof(extraPositiveResponses) / sizeof(extraPositiveResponses[0]); i++){
-        if(strstr(firstResponse, extraPositiveResponses[i]) != NULL){
-            //Sets extraPositive to true and emotion to whatever the index was
-            extraPositive = true;
-            emotion = extraPositiveResponses[i];
-            break;
-        }
-    }
+    //Running through each response array to see if users response is equal to any of the emotions in said arrays -> Read function comments
+    findEmotion(firstResponse, positiveResponses, 10, &positive, emotion);
+    findEmotion(firstResponse, extraPositiveResponses, 6, &extraPositive, emotion);
+    findEmotion(firstResponse, negativeResponses, 6, &negative, emotion);
+    findEmotion(firstResponse, extraNegativeResponses, 2, &extraNegative, emotion);
     
-    //Running loop through negativeResponse to check to see if the firstResponse is equal to any of the negativeResponses responses
-    for(int i = 0; i < sizeof(negativeResponses) / sizeof(negativeResponses[0]); i++){
-        if(strstr(firstResponse, negativeResponses[i]) != NULL){
-            negative = true;
-            emotion = negativeResponses[i];
-            break;
-        }
-    }
     
-    for(int i = 0; i < sizeof(extraNegativeResponses) / sizeof(negativeResponses[0]); i++){
-        if(strstr(firstResponse, extraNegativeResponses[i]) != NULL){
-            extraNegative = true;
-            emotion = extraNegativeResponses[i];
-            break;
-        }
-    }
     
     //If user input is equal to happy, continue, else go down
     if(positive || extraPositive){
@@ -160,6 +146,7 @@ int main(int argc, const char * argv[]) {
             if(strcmp(thirdResponse, no[i]) == 0){
                 printf("\n");
                 printf("Ok, well thanks for talking, goodbye!\n");
+                sleep(2);
                 return 0;
             }
         }
@@ -167,6 +154,7 @@ int main(int argc, const char * argv[]) {
         //Ending regarldess of user input
         printf("\n");
         printf("Thats nice, well I have to go, but I hope we can talk again!\n");
+        sleep(2);
         
         //Ending app
         return 0;
@@ -235,8 +223,9 @@ int main(int argc, const char * argv[]) {
         for(int i = 0; i < sizeof(no) / sizeof(no[0]); i++){
             if(strstr(thirdResponse, no[i]) != NULL){
                 printf("\n");
-                printf("Ok, im sorry that you feel that way. I hope we can talk again when you feel better");
+                printf("Ok, im sorry that you feel that way. I hope we can talk again when you feel better.");
                 printf(" \n");
+                sleep(2);
                 return 0;
             }
         }
@@ -244,8 +233,8 @@ int main(int argc, const char * argv[]) {
         
         //Ending conversation regardless of user input
         printf("\n");
-        printf("Well thats unfortunate, but I have to go. I hope we can talk again when you feel better\n");
-  
+        printf("Well thats unfortunate, but I have to go. I hope we can talk again when you feel better.\n");
+        sleep(2);
         
         //Ending app
         return 0;
@@ -255,6 +244,7 @@ int main(int argc, const char * argv[]) {
         printf("\n");
         printf("I dont know how to respond to that, Ill have to talk to you later.\n");
         printf("\n");
+        sleep(2);
         return 1;
     }
     return 0;
